@@ -1,7 +1,7 @@
 import { Carousel } from "./Carousel";
 import { Footer } from "./Footer";
 import { Navbar } from "./Navbar";
-import { Diseños } from "./Diseños";
+import { Design } from "./Design";
 import { About } from "./About";
 
 const Home = () => {
@@ -10,7 +10,7 @@ const Home = () => {
         <Navbar />
         <Carousel />
         <About />
-        <Diseños />
+        <Design />
         <Footer />
     </div>
   )

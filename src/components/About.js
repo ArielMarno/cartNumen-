@@ -1,10 +1,10 @@
 export const About = () => {
   return (
     <div className="about">
-        <aside className="nosotros">
+        <aside className="us">
             <h2>Sobre<span>NOSOTROS</span></h2>
         </aside>
-        <article className="descripcion">
+        <article className="paragraph">
             <p>
                 Bienvenidos a nuestra tienda de ropa en línea. Somos una empresa dedicada a ofrecerle a nuestros clientes una amplia selección de prendas de alta calidad y a precios asequibles.
             </p>

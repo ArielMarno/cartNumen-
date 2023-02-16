@@ -1,10 +1,10 @@
 import { useReducer, useEffect } from 'react';
+import { reducerCart, productsInitialState } from '../reducers/shoppingCart_reducer';
 import ProductItem from './ProductItem';
 import ShoppingCartProduct from './ShoppingCartProduct';
-import { reducerCart, productsInitialState } from '../reducers/shoppingCart_reducer';
 import TYPES from '../reducers/actionTypes';
-import { Navbar } from './Navbar';
 import axios from 'axios';
+import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 
 export const Store = () => {
@@ -13,8 +13,10 @@ export const Store = () => {
 
     const getData = async ()=> {
     
-        const productsUrl = "http://localhost:3000/products";
-        const cartUrl = "http://localhost:3000/cart";
+        const productsUrl = "http://localhost:4000/products";
+        const cartUrl = "http://localhost:4000/cart";
+
+//Script para correr servidor en PORT 4000: npm run jserver
 
         const productsList = await axios.get(productsUrl);
         const cart = await axios.get(cartUrl);
@@ -25,10 +27,11 @@ export const Store = () => {
         dispatch({type: TYPES.READ_STATE, payload: [newProducts, newCart]})
     }
 
-
     useEffect(() => {
         getData()
     }, []);
+
+
 
     const addToCart = (id) => {
       dispatch({
@@ -60,30 +63,33 @@ export const Store = () => {
         <Navbar />
         <div>
         <h2 className='stock'>PRODUCTOS</h2>
+
         <div className='container-products'>
           {
             state.products.map((product) => {
               return <ProductItem key={product.id} data={product} addToCart={addToCart} />
             })
-          }
+          } 
         </div>
   
         <hr/>
+
         <div className='cart'>
           <h2 className='shopping-cart'>Carrito🛒</h2>
+          
           <div className='container-buttons'>
           {
             state.cart.length === 0 && <p className='no-products'>Aun no has agregado ningun producto al carrito.</p>
           }
-            <button class="btn btn-success" onClick={() => calculateTotalPriceOfCart()}>Total</button>
+            <button className="btn btn-success" onClick={() => calculateTotalPriceOfCart()}>Total</button>
             {state.totalPriceShoppingCart > 0 && <p className='total-price'>Total a pagar: ${state.totalPriceShoppingCart}</p>}
-            <button class="btn btn-warning" onClick={() => clearCart()}>Limpiar carrito</button>
+            <button className="btn btn-warning" onClick={() => clearCart()}>Limpiar carrito</button>
           </div>
 
           <div className='container-shopping-cart'>
             {
-              state.cart.map((productCart) => {
-                return <ShoppingCartProduct key={productCart.id + (Math.random() * 50 )} data={productCart} deleteFromCart={deleteFromCart} />
+              state.cart.map((item) => {
+                return <ShoppingCartProduct key={item.id} data={item} deleteFromCart={deleteFromCart} />
               })
             }
           </div>

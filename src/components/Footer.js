@@ -13,7 +13,7 @@ export const Footer = () => {
             <p><span>TEL:</span> 555-7373-234</p>
         </div>
         <div className="copy">
-            <img src={logo} alt=""  />
+            <img src={logo} alt="logo"/>
             <p className="marca">©<span>Gentleman, elegance & design.</span> Todos los derechos reservados.</p>
             <p className="developer">Sitio web desarrollado por <span>Ariel Marchesano</span>, a duras penas y con muy poco tiempo.</p>
         </div>

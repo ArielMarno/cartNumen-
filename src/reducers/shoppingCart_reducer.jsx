@@ -5,13 +5,13 @@ export const productsInitialState = {
   products: [
     {
       "id": 1,
-      "url":"https://images.pexels.com/photos/297933/pexels-photo-297933.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "url": "https://images.pexels.com/photos/297933/pexels-photo-297933.jpeg?auto=compress&cs=tinysrgb&w=1600",
       "name": "Camisas",
-      "price": 60.00
+      "price": 60.30
     },
     {
       "id": 2,
-      "url":"https://images.pexels.com/photos/45055/pexels-photo-45055.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "url": "https://images.pexels.com/photos/45055/pexels-photo-45055.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       "name": "Corbata",
       "price": 32.90
     },
@@ -44,26 +44,37 @@ export const productsInitialState = {
   totalPriceShoppingCart: 0
 }
 
+
 export const reducerCart = (state, action) => {
   switch (action.type) {
     case TYPES.READ_STATE: {
       return {
-          ...state,
-          products: action.payload[0],
-          cart: action.payload[1]
-      }
-  }
-    case TYPES.ADD_TO_CART: {
-      let newProduct = state.products.find((product) => product.id === action.payload)
-      return {
         ...state,
-        cart: [...state.cart, newProduct]
-      };
+        products: action.payload[0],
+        cart: action.payload[1]
+      }
+    }
+    case TYPES.ADD_TO_CART: {
+      const addItem = state.products.find((product) => product.id === action.payload)
+      const itemCart = state.cart.find((item) => item.id === addItem.id)
+
+      return itemCart ? {
+        ...state,
+        cart: state.cart.map((item) => item.id === addItem.id ? { ...item, quantity: item.quantity + 1 } : item)
+      } : {
+        ...state,
+        cart: [...state.cart, { ...addItem, quantity: 1 }],
+      }
     }
     case TYPES.DELETE_PRODUCT_FROM_CART: {
-      return {
+      const delItem = state.cart.find((item) => item.id === action.payload)
+
+      return delItem.quantity > 1 ? {
         ...state,
-        cart: state.cart.filter((product) => product.id !== action.payload)
+        cart: state.cart.map((item) => item.id === action.payload ? { ...item, quantity: item.quantity - 1 } : item)
+      } : {
+        ...state,
+        cart: state.cart.filter((item) => item.id !== action.payload)
       }
     }
 
@@ -74,7 +85,7 @@ export const reducerCart = (state, action) => {
     case TYPES.CALCULATE_TOTAL_PRICE_OF_THE_CART: {
       return {
         ...state,
-        totalPriceShoppingCart: state.cart.reduce((previousValue, product) => previousValue + product.price, 0)
+        totalPriceShoppingCart: state.cart.reduce((previousValue, product) => previousValue + product.price * product.quantity, 0)
       }
     }
     default:
